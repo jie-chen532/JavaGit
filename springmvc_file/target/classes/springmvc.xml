@@ -24,6 +24,6 @@
 
     <!--静态资源放行-->
     <mvc:resources mapping="/js/**" location="/js/"></mvc:resources>
-
+    <mvc:resources mapping="/upload/**" location="/upload/"></mvc:resources>
 
 </beans>
