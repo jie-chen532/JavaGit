@@ -34,8 +34,9 @@
                     contentType:false,
                     success:function (result) {
                         //接收后台响应的信息
-                        console.log(result)
+                        alert(result.message);
                         //图片回显
+                        $("#headImg").attr("src","upload/"+result.fileName);
                     }
                 })
             })
@@ -51,6 +52,8 @@
     <p>图像
         <br/>
         <input id="photo" type="file" >
+        <br/>
+        <img id="headImg" style="width: 200px;height: 200px" alt="你还未上传图片">
         <a id="uploadFile" href="javascript:void(0)">立即上传</a>
     </p>
     <p><input type="submit" value="注册"></p>
