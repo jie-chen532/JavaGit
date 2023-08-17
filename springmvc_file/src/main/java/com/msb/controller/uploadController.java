@@ -1,5 +1,7 @@
 package com.msb.controller;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +17,9 @@ import java.util.UUID;
 @Controller
 public class uploadController {
 
+    //tomcat上传路径
+    private final String FILE_PATH = "http://192.168.1.6:8090/upload/";
+
     @ResponseBody
     @RequestMapping("fileUpload.do")
     public Map<String, String> uploadFile(MultipartFile headPhoto, HttpServletRequest request) throws IOException {
@@ -24,16 +29,6 @@ public class uploadController {
         {
             mapResult.put("message", "文件大小不能超过5MB");
             return mapResult;
-        }
-        //获取磁盘中upload路径
-        String upload = request.getServletContext().getRealPath("upload");
-        //创建文件对象
-        File file = new File(upload);
-        //判断目录是否存在，若不存在直接创建
-        if(file.exists())
-        {
-            //直接创建多层目录
-            file.mkdirs();
         }
         //获取上传的文件名
         String originalFilename = headPhoto.getOriginalFilename();
@@ -47,12 +42,14 @@ public class uploadController {
         }
         //使用uuid替换文件名
         String newFileName = UUID.randomUUID() + extendName;
-        //生成文件存储位置
-        File storageFile = new File(file, newFileName);
-        //文件保存
-        headPhoto.transferTo(storageFile);
+        //创建 sun公司提供的jersey包中的client对象
+        Client client = Client.create();
+        WebResource webResource = client.resource(FILE_PATH + newFileName);
+        //将文件存储到服务器
+        //String.class是返回值类型的字节码，代表返回值类型是String
+        webResource.put(String.class, headPhoto.getBytes());
         //返回文件名和文件路径,供前端回显
-        mapResult.put("fileName", newFileName);
+        mapResult.put("fileName", FILE_PATH + newFileName);
         mapResult.put("fileContentType", headPhoto.getContentType());
         mapResult.put("message", "ok");
         return mapResult;

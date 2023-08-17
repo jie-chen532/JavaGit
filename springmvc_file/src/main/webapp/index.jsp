@@ -36,7 +36,7 @@
                         //接收后台响应的信息
                         alert(result.message);
                         //图片回显
-                        $("#headImg").attr("src","upload/"+result.fileName);
+                        $("#headImg").attr("src",result.fileName);
                     }
                 })
             })
