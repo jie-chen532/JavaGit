@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--suppress MybatisXMapperXmlInspection -->
+<mapper namespace="com.msb.mapper.UserMapper">
+    <insert id="addUserInfo">
+        insert into player values(DEFAULT, #{userName}, #{password}, #{nickName}, #{photoName}, #{fileType})
+    </insert>
+</mapper>

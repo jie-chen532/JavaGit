@@ -1,10 +1,14 @@
 package com.msb.controller;
 
+import com.msb.pojo.UserInfo;
+import com.msb.service.AddUserInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +23,8 @@ public class uploadController {
 
     //tomcat上传路径
     private final String FILE_PATH = "http://192.168.1.6:8090/upload/";
+
+
 
     @ResponseBody
     @RequestMapping("fileUpload.do")
@@ -49,9 +55,11 @@ public class uploadController {
         //String.class是返回值类型的字节码，代表返回值类型是String
         webResource.put(String.class, headPhoto.getBytes());
         //返回文件名和文件路径,供前端回显
-        mapResult.put("fileName", FILE_PATH + newFileName);
+        mapResult.put("fileName", newFileName);
         mapResult.put("fileContentType", headPhoto.getContentType());
         mapResult.put("message", "ok");
         return mapResult;
     }
+
+
 }
