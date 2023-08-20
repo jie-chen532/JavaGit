@@ -36,7 +36,7 @@
                         //接收后台响应的信息
                         alert(result.message);
                         //图片回显
-                        $("#headImg").attr("src","http://192.168.1.6:8090/upload/" + result.fileName);
+                        $("#headImg").attr("src","http://192.168.1.4:8090/upload/" + result.fileName);
 
                         $("#photoInput").val(result.fileName);
                         $("#filetypeInput").val(result.fileContentType);

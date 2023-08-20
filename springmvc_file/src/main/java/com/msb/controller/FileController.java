@@ -1,30 +1,29 @@
 package com.msb.controller;
 
-import com.msb.pojo.UserInfo;
-import com.msb.service.AddUserInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Controller
-public class uploadController {
+public class FileController {
 
     //tomcat上传路径
-    private final String FILE_PATH = "http://192.168.1.6:8090/upload/";
-
-
+    private final String FILE_PATH = "http://192.168.1.4:8090/upload/";
 
     @ResponseBody
     @RequestMapping("fileUpload.do")
@@ -61,5 +60,21 @@ public class uploadController {
         return mapResult;
     }
 
+    @RequestMapping("fileDownload.do")
+    @ResponseBody
+    public void fileDownload(String photoName, String fileType, HttpServletResponse response) throws IOException {
+        //从入参获取文件名称和文件类型
+        //设置响应头
+        //1.告诉浏览器要将数据保存到磁盘上，不在浏览器上直接解析
+        response.setHeader("Content-Disposition", "attachment;filename="+photoName);
+        //2.告诉浏览器下载的文件类型
+        response.setContentType(fileType);
+        //从图片服务器获取输入流
+        InputStream inputStream = new URL(FILE_PATH + photoName).openStream();
+        //获取一个指向浏览器的输出流
+        ServletOutputStream outputStream = response.getOutputStream();
+        //向浏览器响应文件
+        IOUtils.copy(inputStream, outputStream);
+    }
 
 }

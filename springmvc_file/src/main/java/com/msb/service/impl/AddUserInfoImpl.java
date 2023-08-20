@@ -6,6 +6,8 @@ import com.msb.service.AddUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AddUserInfoImpl implements AddUserInfo {
 
@@ -16,6 +18,10 @@ public class AddUserInfoImpl implements AddUserInfo {
 
         int row = userMapper.addUserInfo(userInfo);
         return row;
+    }
+
+    public List<UserInfo> listUser() {
+        return userMapper.listInfo();
     }
 
 }
